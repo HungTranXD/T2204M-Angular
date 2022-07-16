@@ -1,4 +1,5 @@
-import {Component} from "@angular/core";
+import {Component, Input} from "@angular/core";
+import {IStudent} from "../interfaces/student.interface";
 
 @Component({
   selector: 'app-student',
@@ -7,14 +8,23 @@ import {Component} from "@angular/core";
 })
 
 export class StudentComponent {
-  studentName = 'Truong Van Nam';
-  age = 18;
+  // @Input()
+  // studentName !: string;
+
+  @Input("studentName") studentName !: string;
+  @Input("studentAge") studentAge !: number;
+
+  // age = 18;
   phoneNumber = '09430503258';
 
   increaseAge(){
-    this.age++;
+    this.studentAge++;
   }
   decreaseAge(){
-    this.age--;
+    this.studentAge--;
   }
+
+  //Thay vi tao tung bien rieng le thi tao 1 object lon
+  @Input()
+  data !: IStudent;
 }

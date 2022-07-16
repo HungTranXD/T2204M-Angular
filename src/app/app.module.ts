@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import {StudentComponent} from "./student/student.component";
 import {ClassroomComponent} from "./classroom/classroom.component";
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -12,7 +13,7 @@ import {ClassroomComponent} from "./classroom/classroom.component";
     ClassroomComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule, FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
