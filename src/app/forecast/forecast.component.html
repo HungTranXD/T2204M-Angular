@@ -1,0 +1,23 @@
+<div class="container">
+  <div class="search-form-container">
+    <form method="get" action="#" class="search-form">
+      <input type="text" name="cityName" id="cityName" placeholder="Enter city's name..."/>
+      <button type="button" onclick="inputCity();"><img src="https://icon-library.com/icon/search-for-icon-1.html.html"/></button>
+    </form>
+  </div>
+  <div class="weather-card-container">
+    <div class="weather-card">
+      <div class="date-time">{{data.list[0].dt_txt}}</div>
+      <div class="col-container">
+        <div class="col-left">
+          <div class="temp">{{data.list[0].main.temp}}<sup>o</sup>C</div>
+          <div class="desc">{{data.list[0].weather[0].description}}</div>
+        </div>
+        <div class="col-righ">
+          <div class="icon" id="icon"><img src="https://openweathermap.org/img/wn/{{data.list[0].weather[0].icon}}@2x.png"/></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

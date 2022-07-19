@@ -1,0 +1,10 @@
+<input type="text" [(ngModel)]="cityCode" placeholder="City name.."/>
+<button type="button" (click)="changeCity()">Change city</button>
+
+<h1>Day la thong tin thoi tiet hom nay cua: </h1>
+<div *ngIf="data">
+  <h1>{{data.name + ',' + data.sys.country}}</h1>
+  <h2>Temp: {{data.main.temp}}</h2>
+  <h2>Humidity: {{data.main.humidity}}</h2>
+  <h2>Pressure: {{data.main.pressure}}</h2>
+</div>

@@ -1,0 +1,99 @@
+/* ------------------- LAYOUT CHUNG ------------------ */
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body{
+  font-family: sans-serif;
+  font-size: 16px;
+  line-height: 1.25;
+}
+img{
+  max-width: 100%;
+}
+.section{
+  float: left;
+  width: 100%;
+}
+.container{
+  max-width: 1200px;
+}
+/* --------------- HẾT LAYOUT CHUNG --------------- */
+body{
+  background-image: linear-gradient(rgba(36, 229, 229, 0.3), rgba(140, 44, 161, 0.3));
+  background-size: cover;
+}
+.search-form-container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px auto;
+}
+.search-form{
+  width: 100%;
+  max-width: 500px;
+  background: rgba(255,255,255,0.5);
+  display: flex;
+  align-items: center;
+  border-radius: 60px;
+  padding: 5px 16px;
+  backdrop-filter: blur(4px);
+}
+.search-form input{
+  background: transparent;
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 8px;
+  font-size: 20px;
+}
+.search-form button img {
+  width: 18px;
+}
+.search-form button{
+  width: 30px;
+  height: 30px;
+  border: 0;
+  border-radius: 100%;
+  background: rgba(136, 134, 134, 0.79);
+}
+.weather-card-container{
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.weather-card{
+  flex-basis: 23%;
+  border: 2px solid #0a7bc5;
+  border-radius: 5px;
+  padding: 20px 0px 20px 20px ;
+  margin-bottom: 30px;
+
+  color: white;
+  background-color: rgba(0, 0, 0, 0.27);
+}
+.date-time{
+  font-size: 21px;
+}
+.temp{
+  font-size: 36px;
+  margin: 20px 0;
+}
+.desc{
+  font-size: 16px;
+  margin: 15px 0;
+}
+.col-container{
+  display: flex;
+  justify-content: space-between;
+}
+.col-left{
+  flex-basis: 50%;
+}
+.col-righ{
+  flex-basis: 50%;
+}
+.col-righ img{
+  width: 100%;
+}
