@@ -12,10 +12,10 @@ export class ForecastComponent {
   data : IForecast | undefined;
   cityCode = 'Hanoi';
   //Lay du lieu tu API cho vao bien data
-  constructor(private http: HttpClient) { //Ham nay tu dong chay sau khi tao component
+  constructor(private http: HttpClient) {
   }
 
-  ngOnInit() { //Ham nay tu dong chay say khi print html xong
+  ngOnInit() {
     this.changeCity();
   }
 

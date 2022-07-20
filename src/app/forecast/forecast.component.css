@@ -1,27 +1,17 @@
-/* ------------------- LAYOUT CHUNG ------------------ */
-*{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+img{
+  max-width: 100%;
 }
-body{
+.container{
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 15px 0;
+  box-sizing: border-box;
   font-family: sans-serif;
   font-size: 16px;
   line-height: 1.25;
 }
-img{
-  max-width: 100%;
-}
-.section{
-  float: left;
-  width: 100%;
-}
-.container{
-  max-width: 1200px;
-}
-/* --------------- HẾT LAYOUT CHUNG --------------- */
-body{
-  background-image: linear-gradient(rgba(36, 229, 229, 0.3), rgba(140, 44, 161, 0.3));
+section{
+  background-image: linear-gradient(rgba(36, 184, 229, 0.3), rgba(108, 44, 161, 0.3)), url("https://images.unsplash.com/photo-1504608524841-42fe6f032b4b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1965&q=80");
   background-size: cover;
 }
 .search-form-container{
@@ -57,21 +47,23 @@ body{
   border: 0;
   border-radius: 100%;
   background: rgba(136, 134, 134, 0.79);
+  cursor: pointer;
 }
 .weather-card-container{
+  width: 100%;
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
 }
 .weather-card{
-  flex-basis: 23%;
+  flex-basis: 21.5%;
   border: 2px solid #0a7bc5;
-  border-radius: 5px;
+  border-radius: 8px;
   padding: 20px 0px 20px 20px ;
   margin-bottom: 30px;
 
   color: white;
-  background-color: rgba(0, 0, 0, 0.27);
+  background-color: rgba(255, 255, 255, 0.27);
 }
 .date-time{
   font-size: 21px;

@@ -1,23 +1,24 @@
-<div class="container">
-  <div class="search-form-container">
-    <form method="get" action="#" class="search-form">
-      <input type="text" name="cityName" id="cityName" placeholder="Enter city's name..."/>
-      <button type="button" onclick="inputCity();"><img src="https://icon-library.com/icon/search-for-icon-1.html.html"/></button>
-    </form>
-  </div>
-  <div class="weather-card-container">
-    <div class="weather-card">
-      <div class="date-time">{{data.list[0].dt_txt}}</div>
-      <div class="col-container">
-        <div class="col-left">
-          <div class="temp">{{data.list[0].main.temp}}<sup>o</sup>C</div>
-          <div class="desc">{{data.list[0].weather[0].description}}</div>
-        </div>
-        <div class="col-righ">
-          <div class="icon" id="icon"><img src="https://openweathermap.org/img/wn/{{data.list[0].weather[0].icon}}@2x.png"/></div>
+<section>
+  <div class="container">
+    <div class="search-form-container">
+      <div class="search-form">
+        <input type="text" [(ngModel)]="cityCode" placeholder="Enter city's name..."/>
+        <button type="button" (click)="changeCity();"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Search_Icon.svg/500px-Search_Icon.svg.png"/></button>
+      </div>
+    </div>
+    <div class="weather-card-container" *ngIf="data">
+      <div class="weather-card" *ngFor="let list of data.list; let i = index">
+        <div class="date-time">{{data.list[i].dt_txt}}</div>
+        <div class="col-container">
+          <div class="col-left">
+            <div class="temp">{{data.list[i].main.temp}}<sup>o</sup>C</div>
+            <div class="desc">{{data.list[i].weather[0].description}}</div>
+          </div>
+          <div class="col-righ">
+            <div class="icon" id="icon"><img src="https://openweathermap.org/img/wn/{{data.list[i].weather[0].icon}}@2x.png"/></div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-
-</div>
+</section>
