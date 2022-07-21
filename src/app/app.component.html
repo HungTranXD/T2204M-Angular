@@ -1,3 +1,19 @@
+<header class="section">
+  <div class="container">
+    <ul class="nav">
+      <li class="nav-item"><a routerLink="/">Home</a></li>
+      <li class="nav-item"><a routerLink="/about-us">About us</a></li>
+      <li class="nav-item"><a routerLink="/login">Login</a></li>
+      <li class="nav-item"><a routerLink="/register">Register</a></li>
+    </ul>
+  </div>
+</header>
+<section class="section">
+  <div class="container">
+    <router-outlet></router-outlet>
+  </div>
+</section>
+
 <app-currentweather></app-currentweather>
 <app-classroom *ngFor="let cl of classroomArray" [classroomData]="cl"></app-classroom>
 <app-forecast></app-forecast>

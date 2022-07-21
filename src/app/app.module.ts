@@ -8,6 +8,17 @@ import {FormsModule} from "@angular/forms";
 import {CurrentWeatherComponent} from "./current-weather/current-weather.component";
 import {HttpClientModule} from "@angular/common/http";
 import {ForecastComponent} from "./forecast/forecast.component";
+import {RouterModule, Routes} from "@angular/router";
+import {AboutusComponent} from "./aboutus/aboutus.component";
+import {LoginComponent} from "./login/login.component";
+import {RegisterComponent} from "./register/register.component";
+
+const appRoutes: Routes = [
+  {path: '',component: CurrentWeatherComponent},
+  {path: 'about-us',component: AboutusComponent},
+  {path: 'login',component: LoginComponent},
+  {path: 'register',component: RegisterComponent},
+];
 
 @NgModule({
   declarations: [
@@ -15,11 +26,15 @@ import {ForecastComponent} from "./forecast/forecast.component";
     StudentComponent,
     ClassroomComponent,
     CurrentWeatherComponent,
-    ForecastComponent
+    ForecastComponent,
+    AboutusComponent,
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule, FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    RouterModule.forRoot(appRoutes)
   ],
   providers: [],
   bootstrap: [AppComponent]
