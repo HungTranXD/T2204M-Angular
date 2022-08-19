@@ -149,7 +149,8 @@ GROUP BY OrderId;
 
 
 -- 7. Thay đổi những thông tin sau
--- a. Viết câu lệnh để thay đổi trường giá tiền của từng mặt hàng là dương (>0)ALTER TABLE Products
+-- a. Viết câu lệnh để thay đổi trường giá tiền của từng mặt hàng là dương (>0)
+ALTER TABLE Products
 ADD CONSTRAINT check_product_price_positive
 CHECK(Price > 0);
 
@@ -158,5 +159,6 @@ ALTER TABLE Orders
 ADD CONSTRAINT check_order_date
 CHECK(OrderDate < GETDATE());
 
--- c. Viết câu lệnh để thêm trường ngày xuất hiện trên thị trường của sản phẩmALTER TABLE Products
+-- c. Viết câu lệnh để thêm trường ngày xuất hiện trên thị trường của sản phẩm
+ALTER TABLE Products
 ADD IntroduceDate DATE;
