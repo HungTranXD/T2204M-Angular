@@ -162,3 +162,61 @@ CHECK(OrderDate < GETDATE());
 -- c. Viết câu lệnh để thêm trường ngày xuất hiện trên thị trường của sản phẩm
 ALTER TABLE Products
 ADD IntroduceDate DATE;
+
+-- 8. Thực hiện các yêu cầu sau 
+-- a) Đặt chỉ mục cho cột Tên hàng và Người đặt hàng 
+CREATE INDEX IDX_ProductName
+ON Products(Name);
+
+CREATE INDEX IDX_CustomerName
+ON Customers(Name);
+
+-- b) Xây dựng các View 
+CREATE VIEW View_KhachHang AS
+SELECT Name, Tel, Address
+FROM Customers;
+
+CREATE VIEW View_SanPham AS
+SELECT Name, Price
+FROM Products;
+
+CREATE VIEW View_KhachHang_SanPham AS
+SELECT C.Name, C.Tel, P.Name AS ProductName, OP.Quantity, O.OrderDate
+FROM Customers C
+JOIN Orders O
+ON C.Id = O.CustomerId
+JOIN Order_Products OP
+ON O.Id = OP.OrderId
+JOIN Products P
+ON OP.ProductId = P.Id;
+
+-- c) Viết các Store Procedure
+CREATE PROCEDURE SP_TimKH_MaKH @Id INT
+AS
+SELECT * 
+FROM Customers
+WHERE Id = @Id;
+
+CREATE PROCEDURE SP_TimKH_MaHD @OrderId INT
+AS
+SELECT * 
+FROM Customers
+WHERE Id IN (
+	SELECT CustomerId
+	FROM Orders
+	WHERE Id = @OrderId
+);
+
+CREATE PROCEDURE SP_SanPham_MaKH @CustomerId INT
+AS
+SELECT * 
+FROM Products
+WHERE Id IN (
+	SELECT ProductId
+	FROM Order_Products
+	WHERE OrderId IN (
+		SELECT Id
+		FROM Orders
+		WHERE CustomerId = @CustomerId
+	)
+);
