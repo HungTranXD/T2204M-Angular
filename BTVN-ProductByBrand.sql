@@ -10,7 +10,7 @@ CREATE TABLE Products(
 	Name NVARCHAR(100) NOT NULL,
 	Description NVARCHAR(255) NOT NULL,
 	Unit NVARCHAR(100) NOT NULL DEFAULT N'Chiếc',
-	Price DECIMAL(12,4) NOT NULL DEFAULT 0 CHECK(Price >= 0),
+	Price DECIMAL(12,4) NOT NULL DEFAULT 0 CHECK(Price >= 0), -- Giá USD
 	Quantity INT NOT NULL DEFAULT 0 CHECK(Quantity >= 0),
 	BrandId INT FOREIGN KEY REFERENCES Brands(Id) 
 );
@@ -80,12 +80,152 @@ SELECT COUNT(*)
 FROM Products;
 
 -- c) Tổng số loại sản phẩm của mỗi hãng có trong cửa hàng
-SELECT COUNT(*) Number, Brands.Name
+SELECT COUNT(*) AS Number, Brands.Name
 FROM Products
-JOIN Brands
+LEFT JOIN Brands
 ON Products.BrandId = Brands.Id
 GROUP BY Brands.Name;
 
 -- d) Tổng số đầu sản phẩm của toàn cửa hàng
 SELECT COUNT(*)
 FROM Products;
+
+-- 7. Thay đổi những thay đổi sau trên cơ sở dữ liệu
+-- a) Thay đổi trường giá tiền của từng mặt hàng là dương (>0)
+ALTER TABLE Products
+ADD CONSTRAINT CK_price_positive
+CHECK (Price > 0);
+
+-- b) Thay đổi số điện thoại phải bắt đầu bằng 0
+UPDATE Brands
+SET Tel = '0983232'
+WHERE Id = 123;
+
+UPDATE Brands
+SET Tel = '0423562'
+WHERE Id = 124;
+
+ALTER TABLE Brands
+ADD CONSTRAINT CK_phone_start_with_0
+CHECK (Tel LIKE '0%');
+
+-- c) Viết các câu lệnh để xác định khóa ngoại và khóa chính của các bảng
+SELECT
+    tc.table_schema, 
+    tc.constraint_name, 
+    tc.table_name, 
+    kcu.column_name, 
+    ccu.table_schema AS foreign_table_schema,
+    ccu.table_name AS foreign_table_name,
+    ccu.column_name AS foreign_column_name 
+FROM 
+    information_schema.table_constraints AS tc 
+    JOIN information_schema.key_column_usage AS kcu
+      ON tc.constraint_name = kcu.constraint_name
+      AND tc.table_schema = kcu.table_schema
+    JOIN information_schema.constraint_column_usage AS ccu
+      ON ccu.constraint_name = tc.constraint_name
+      AND ccu.table_schema = tc.table_schema
+WHERE tc.constraint_type = 'PRIMARY KEY' AND tc.table_name='Brands';
+
+SELECT
+    tc.table_schema, 
+    tc.constraint_name, 
+    tc.table_name, 
+    kcu.column_name, 
+    ccu.table_schema AS foreign_table_schema,
+    ccu.table_name AS foreign_table_name,
+    ccu.column_name AS foreign_column_name 
+FROM 
+    information_schema.table_constraints AS tc 
+    JOIN information_schema.key_column_usage AS kcu
+      ON tc.constraint_name = kcu.constraint_name
+      AND tc.table_schema = kcu.table_schema
+    JOIN information_schema.constraint_column_usage AS ccu
+      ON ccu.constraint_name = tc.constraint_name
+      AND ccu.table_schema = tc.table_schema
+WHERE tc.constraint_type = 'PRIMARY KEY' AND tc.table_name='Products';
+
+SELECT
+    tc.table_schema, 
+    tc.constraint_name, 
+    tc.table_name, 
+    kcu.column_name, 
+    ccu.table_schema AS foreign_table_schema,
+    ccu.table_name AS foreign_table_name,
+    ccu.column_name AS foreign_column_name 
+FROM 
+    information_schema.table_constraints AS tc 
+    JOIN information_schema.key_column_usage AS kcu
+      ON tc.constraint_name = kcu.constraint_name
+      AND tc.table_schema = kcu.table_schema
+    JOIN information_schema.constraint_column_usage AS ccu
+      ON ccu.constraint_name = tc.constraint_name
+      AND ccu.table_schema = tc.table_schema
+WHERE tc.constraint_type = 'FOREIGN KEY' AND tc.table_name='Products';
+
+-- 8. Thực hiện các yêu cầu sau
+-- a) Thiết lập chỉ mục cho các cột: Tên hàng và mô tả hàng 
+CREATE INDEX IDX_product_name
+ON Products(Name);
+
+CREATE INDEX IDX_product_des
+ON Products(Description);
+
+-- b) Viết các view
+CREATE VIEW View_SanPham AS
+SELECT Id, Name, Price
+FROM Products;
+
+CREATE VIEW View_SanPham_Hang AS
+SELECT P.Id, P.Name, B.Name AS Brand
+FROM Products P
+LEFT JOIN Brands B
+ON P.BrandId = B.Id;
+
+-- c) Viết các store procedure
+CREATE PROCEDURE SP_SanPham_TenHang 
+AS
+SELECT P.Id, P.Name, P.Description, P.Price, P.Quantity, B.Name AS Brand
+FROM Products P
+LEFT JOIN Brands B
+ON P.BrandId = B.Id;
+
+EXEC SP_SanPham_TenHang;
+CREATE PROCEDURE SP_SanPham_Gia @Price DECIMAL(12,4)
+AS
+SELECT * 
+FROM Products
+WHERE Price >= @Price; 
+
+EXEC SP_SanPham_Gia @Price = 650;
+
+CREATE PROCEDURE SP_SanPham_HetHang 
+AS
+SELECT * 
+FROM Products
+WHERE Quantity = 0;
+
+EXEC SP_SanPham_HetHang;
+
+-- d) Viết trigger
+CREATE TRIGGER TG_Xoa_Hang
+ON Brands
+AFTER DELETE 
+AS
+BEGIN 
+	PRINT 'Khong duoc xoa san pham';
+	ROLLBACK TRAN;
+END;
+
+CREATE TRIGGER TG_Xoa_SanPham
+ON Products
+AFTER DELETE
+AS 
+BEGIN 
+	IF (SELECT Quantity FROM deleted) > 0
+	BEGIN 
+		PRINT 'San pham con hang';
+		ROLLBACK TRAN;
+	END
+END;
