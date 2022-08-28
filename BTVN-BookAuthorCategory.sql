@@ -22,9 +22,9 @@ CREATE TABLE books(
 	edition INT NOT NULL DEFAULT 1 CHECK(edition >= 1),
 	price DECIMAL(16,0) NOT NULL DEFAULT 0 CHECK(price >=0),
 	quantity INT NOT NULL DEFAULT 0 CHECK(quantity >= 0),
-	category_id INT NOT NULL FOREIGN KEY REFERENCES categories(id),
-	author_id INT NOT NULL FOREIGN KEY REFERENCES authors(id),
-	publisher_id INT NOT NULL FOREIGN KEY REFERENCES publishers(id),
+	category_id INT FOREIGN KEY REFERENCES categories(id),
+	author_id INT FOREIGN KEY REFERENCES authors(id),
+	publisher_id INT FOREIGN KEY REFERENCES publishers(id),
 );
 
 DROP TABLE books;
@@ -64,6 +64,11 @@ VALUES
 ', '2015', 1, 190000, 70, 2, 3, 3),
 ('B004', N'Chiến tranh và hòa bình', N'đại tiểu thuyết của đại văn hào Lev Tolstoy – sớm vượt ra khỏi biên giới lãnh thổ để được thế giới thừa nhận là thiên tiểu thuyết vĩ đại nhất mọi thời đại bởi những vấn đề lớn lao của cả nhân loại hiện lên sinh động và xúc động qua từng từ, từng câu bởi ngòi bút nghệ thuật trác việt của tác giả.', '2003', 1, 295000, 25, 4, 4, 4);
  
+ DELETE FROM categories
+ WHERE id = 1
+
+
+ SELECT * FROM categories
  -- 3. Liệt kê các cuốn sách có năm xuất bản từ 2008 đến nay
  SELECT * 
  FROM books
@@ -213,17 +218,13 @@ ON categories
 AFTER DELETE
 AS
 BEGIN
-	IF 
-		(SELECT SUM(quantity)
-		FROM books
-		WHERE category_id IN (
-			SELECT id 
-			FROM deleted
-	)) > (0)
+	IF EXISTS (SELECT * FROM books WHERE category_id IN (SELECT id FROM deleted))
 	BEGIN
-		PRINT 'Van con sach trong danh muc';
-		ROLLBACK TRANSACTION;
+		PRINT 'Van con sach trong thu muc';
+		ROLLBACK TRAN;
 	END
 END;
+
 DROP TRIGGER can_not_delete_category;
+
 
